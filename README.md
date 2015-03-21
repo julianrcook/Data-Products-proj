@@ -1,4 +1,4 @@
-# Data-Products-proj
+# Data Products project
 Repository for Data Products shiny app, documentation and presentation materials
 
 - The shiny app plots any of 4 European Stock Indices vs Daily returns and cumulative R-Squared to examine the relationship between cumulative R squared and regime changes (changes from trend to sideways, up to down etc)

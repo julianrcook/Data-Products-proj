@@ -10,7 +10,7 @@ Repository for Data Products shiny app, documentation and presentation materials
  - France CAC
  - UK FTSE
 
- The app is hosted at (to be updated)
- https://julianrcook.shinyapps.io/ShinyIdx01/
+ The app is hosted at (updated)
+http://julianrcook.shinyapps.io/ShinyCumulativeRSquared
  
  The R studio presentation should be viewable on the gh-pages branch of this project

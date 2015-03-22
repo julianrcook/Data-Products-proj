@@ -13,4 +13,5 @@ Repository for Data Products shiny app, documentation and presentation materials
  The app is hosted at (updated)
 http://julianrcook.shinyapps.io/ShinyCumulativeRSquared
  
- The R studio presentation should be viewable on the gh-pages branch of this project
+ The R studio presentation should be viewable on the gh-pages branch of this project and at
+http://julianrcook.github.io/Data-Products-proj/StockRegimeswithRSquared.html#/

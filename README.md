@@ -9,3 +9,8 @@ Repository for Data Products shiny app, documentation and presentation materials
  - Switzerland SMI
  - France CAC
  - UK FTSE
+
+ The app is hosted at (to be updated)
+ https://julianrcook.shinyapps.io/ShinyIdx01/
+ 
+ The R studio presentation should be viewable on the gh-pages branch of this project

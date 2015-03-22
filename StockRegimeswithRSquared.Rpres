@@ -1,0 +1,107 @@
+Stock Market Regimes with cumulative R-Squared
+========================================================
+author: Julian Cook
+date: 21-Mar-2015
+
+Introduction
+========================================================
+
+
+- Stock markets typically have periods of trending and sideways movement
+- These are referred to as regimes
+- Complex techniques are employed to model them, such as Markov Chains
+- Markov Chains need to be trained on prior data to be useful
+
+***
+
+```{r, echo=FALSE}
+      data(EuStockMarkets)
+      plot(EuStockMarkets[,"DAX"], cex=.25,col='blue', xlab="days", ylab = "Price", main = "Dax Index 92-98")  # idx data
+      grid()
+```
+
+Using R Squared for simple regime detection
+========================================================
+
+- We don't need to calculate the mean or SD to calculate R Squared.
+- The Log return is $$R^2 = LN\left({\frac{Price_{i+1}}{Price_i}}\right)^2$$
+- and the Cumulative R  Squared calculation is $$\sum_{i=0}^n R^2$$
+- The advantage is speed because $R^2$ is not averaged across a period of time.
+- If the market is changing, the rate of increase will speed up or slow down.
+
+
+
+An Example using DAX data 92-95
+========================================================
+
+- Plot shows the DAX in Log scale (blue) with the Cumulative R Squared
+- Mostly $R^2$ increases at a steady rate
+- Around the 300 day point $R^2$ has a significant kink
+- Around the 700-900 day point there are several smaller "ripples"
+- These seem to signal changes in trend or sideways movements
+
+
+***
+
+
+```{r, echo=FALSE}
+      obsStart <- 1
+      obs <-1000
+      LnDiffIdx <- diff(log(EuStockMarkets))[,"DAX"]
+      LnDiffIdx_pow2 <- LnDiffIdx^2
+      LnDiffIdx_pow2Sum <- cumsum(LnDiffIdx_pow2)
+      LnDiffIdx_sum <- cumsum(LnDiffIdx)
+      # side block of plots
+      par(mfrow=c(2,1))
+
+      plot(LnDiffIdx_sum[obsStart:obs], cex=.25,col='blue', xlab="days",ylab = "Log Change from start", main = "Index Log Scale")  # LN changes cumsum
+      grid()
+      plot(LnDiffIdx_pow2Sum[obsStart:obs], cex=.25,col='orange', xlab="days", ylab = "cum R Squared", main = "Cumulative Sq'd Log Returns")  # LN changes R2 cumsum
+      grid()
+```
+
+R Squared does not give a signal itself
+========================================================
+
+- A closer look at 700-900 days
+- These are the "ripples" from the previous slide
+- Remember $R^2$ always increases
+- It is really the concavity or convexity that signals regime change
+- So we would have to measure the second derivative
+
+***
+
+```{r, echo=FALSE}
+      obsStart <- 700
+      obs <-900
+      LnDiffIdx <- diff(log(EuStockMarkets))[,"DAX"]
+      LnDiffIdx_pow2 <- LnDiffIdx^2
+      LnDiffIdx_pow2Sum <- cumsum(LnDiffIdx_pow2)
+      LnDiffIdx_sum <- cumsum(LnDiffIdx)
+      # single Plot
+      par(mfrow=c(1,1))
+
+      plot(LnDiffIdx_pow2Sum[obsStart:obs], cex=.25,col='orange', xlab="days", ylab = "cum R Squared", main = "Cumulative Sq'd Log Returns")  # LN changes R2 cumsum
+      grid()
+```
+
+Is R Squared Useful?
+========================================================
+
+- We need the 2nd derivative (tricky)
+- Easier: Look at spikes in 1st derivative instead.
+- Sharp spikes match periods of change
+- Calculate this in R: 
+
+`deriv <- diff(CumSquaredRets, lag=10)`
+
+***
+
+```{r, echo=FALSE}
+      LnDiffIdx <- diff(log(EuStockMarkets))[,"DAX"]
+      LnDiffIdx_pow2 <- LnDiffIdx^2
+      LnDiffIdx_pow2Sum <- cumsum(LnDiffIdx_pow2)
+      LnDiffIdx_pow2SumDiff10<-diff(LnDiffIdx_pow2Sum, lag = 10)
+      plot(LnDiffIdx_pow2SumDiff10, cex=.25,col='green', xlab="days", ylab = "1st deriv", main = "Derivative Sq'd Log Returns")
+      grid()
+```
